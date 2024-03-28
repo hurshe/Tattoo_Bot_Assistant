@@ -8,7 +8,7 @@ This bot provides a wide range of services for tattoo artist clients, including 
 
 ## Key Features
 
-- Get information about the tattoo artist, their work, and portfolio.
+- Get information about the tattoo artist, his work, and portfolio.
 - Explore prices for services and special offers.
 - "Preparation and Care" section: tips on preparing for a tattoo and caring for it.
 - Purchase vouchers for tattoo sessions with the option to send them in chat or via email.
