@@ -7,6 +7,33 @@ db = DBManager('tattoo_bot_telegram.db')
 
 
 async def delete_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Delete Messages Function
+
+    The `delete_messages` function is an asynchronous function designed to delete specific messages in a Telegram
+    chat. It takes two parameters: `update` and `context`, which are objects containing information about the
+    incoming update and the bot's context, respectively.
+
+    Parameters: - `update`: An object containing information about the incoming update, such as the chat ID and
+    message ID. - `context`: An object providing the context for the bot's execution, including access to the
+    Telegram Bot API methods.
+
+    Functionality: 1. Retrieves the `chat_id` and `message_id` from the `update` object, representing the ID of
+    the chat and the ID of the message to be deleted, respectively. 2. Retrieves the `first_message_id` from the
+    database for the given `chat_id`, which indicates the ID of the first message in the chat. 3. Iterates over a
+    range from 1 to 10 to delete messages around the `message_id`. 4. Attempts to delete messages preceding and
+    succeeding the `message_id` by a certain offset (up to 10 messages in both directions). 5. Checks if the message
+    to be deleted is not the first message in the chat (`message_id != first_message_id`) before attempting deletion.
+    6. If an exception occurs during deletion, it is caught and returned.
+
+    Usage: - This function can be used within a Telegram bot application to delete specific messages in a chat,
+    typically used for cleaning up previous bot interactions or managing message clutter. - It can be integrated into
+    administrative commands or message processing logic to provide a streamlined user experience and maintain chat
+    cleanliness.
+
+    Note: Ensure that the bot has the necessary permissions to delete messages in the chat where it operates.
+
+    """
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
     first_message_id = db.get_message_id(chat_id)

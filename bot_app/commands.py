@@ -14,6 +14,45 @@ db = DBManager('tattoo_bot_telegram.db')
 
 
 class MainMenuCommands:
+    """
+    MainMenuCommands Class Description
+
+    The `MainMenuCommands` class comprises a collection of static methods responsible for handling various commands
+    within a Telegram bot's main menu. These methods facilitate user interaction by offering functionalities such as
+    selecting language preferences, accessing frequently asked questions (FAQs), viewing contact information,
+    and obtaining location details.
+
+    Static Methods:
+
+    1. `start_command(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Initiates the bot's interaction with the user by presenting language options.
+       - Allows users to select their preferred language.
+
+    2. `kontakt_command(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Displays contact information, including Instagram and Facebook links.
+       - Allows users to return to the main menu.
+
+    3. `faq_command(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Provides access to frequently asked questions (FAQs) categorized by language.
+       - Enables users to navigate through different FAQ topics and return to the main menu.
+
+    4. `location_command(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Shares the bot's location with users, typically representing the bot's physical business location.
+       - Allows users to view the location and return to the main menu.
+
+    5. `all_commands(update: Update, context: ContextTypes.DEFAULT_TYPE)` - Displays all available commands in
+    the main menu. - Enables users to select various options such as starting the bot, accessing FAQs, contacting the
+    bot owner, viewing location details, or accessing voucher-related functionalities.
+
+    Usage: - These static methods are designed to be integrated into a Telegram bot application's main menu
+    functionality, providing users with convenient access to essential features and information. - Each method serves
+    a specific purpose within the main menu interface, allowing users to navigate through different options
+    seamlessly. - The class ensures an organized and user-friendly experience for interacting with the bot's main menu.
+
+    Note: Ensure that the bot has the necessary permissions to delete messages and interact with inline keyboards
+    in the chat where it operates.
+
+    """
 
     @staticmethod
     async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):

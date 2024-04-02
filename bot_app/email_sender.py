@@ -19,6 +19,44 @@ db = DBManager('tattoo_bot_telegram.db')
 
 
 async def send_email_with_attachment(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    send_email_with_attachment Function Description
+
+    The `send_email_with_attachment` function is responsible for sending an email with an attachment to the user. It
+    retrieves the user's email address from the database, constructs an email message with the specified subject,
+    body, and attachment, and sends it using the configured SMTP server.
+
+    Functionality:
+
+    - Retrieve User Information: Retrieves the user's email address and preferred language from the database
+    using the provided `chat_id`.
+    - Construct Email Message: Constructs an email message with the specified
+    subject and body text in the user's preferred language. Attaches the generated electronic voucher PDF file to the
+    email.
+    - SMTP Configuration: Retrieves SMTP server settings (server address, port, username, and password)
+    from environment variables.
+    - Send Email: Connects to the SMTP server, authenticates the sender's
+    credentials, and sends the email with the attached PDF file to the user's email address.
+    - Handle
+    Success/Failure: If the email is successfully sent, it notifies the user in the Telegram chat. If the user does
+    not have a valid email address stored, it sends a message indicating that an email address is required.
+
+    Usage:
+
+    - Invoke this function when the user requests to receive an electronic voucher via email with an attachment. -
+    Ensure that the user's email address is stored in the database before calling this function.
+    - Customize the email subject, body text, and back button text based on the user's preferred language.
+    - Configure the SMTP server settings (server address, port, username, and password) as environment variables
+    for secure communication.
+    - Handle any errors or exceptions that may occur during the email sending process, such as invalid email
+    addresses or SMTP server connection issues.
+
+    Note: This function relies on external libraries (`smtplib`, `email.mime`, etc.) for email handling and
+    attachment transmission. Ensure that these libraries are installed and accessible within your Python environment.
+
+    Feel free to integrate and adapt this function to suit the specific requirements of your Telegram bot
+    application!"""
+
     chat_id = update.effective_chat.id
     lang = db.get_selected_lang(chat_id)
     user_email = db.get_user_email(chat_id)

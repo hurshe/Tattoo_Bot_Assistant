@@ -7,6 +7,48 @@ user_answers = user_answers
 
 
 class DBManager:
+    """
+    Database Manager Class Description
+
+    The `DBManager` class provides functionalities to interact with an SQLite database in a Telegram bot application.
+    It encapsulates methods for creating database connections, creating tables, inserting data, and retrieving
+    information from the database.
+
+    Functionality:
+
+    - Initialization: Accepts the path to the SQLite database file as input during object creation.
+    - Connection Management: Provides a method to create a database connection using the specified database file.
+    - Table Management: Includes methods to create tables for storing user data (`users`) and voucher information (
+    `vouchers`) if they do not exist.
+    - Data Retrieval: Offers methods to retrieve various data from the
+    database, such as selected language, previous language, selected function, FAQ option, selected price,
+    and selected vouchers, among others.
+    - Data Insertion: Provides methods to add new records to the `vouchers`
+    table, either by direct voucher creation or as a result of a payment transaction.
+    - Data Modification:
+    Includes methods to update records in the `users` table, such as updating selected functions, FAQ options,
+    or voucher statuses.
+    - Data Deletion: Offers methods to clear unnecessary data from the database,
+    such as resetting FAQ options or selected functions.
+    - Email Management: Provides functionality to store and
+    retrieve user email addresses in the `users` table.
+
+    Usage:
+
+    - Initialize an instance of the `DBManager` class by providing the path to the SQLite database file.
+    - Utilize the provided methods to interact with the database, including creating tables, inserting data, retrieving
+    information, and managing data integrity.
+    - Integrate the class methods into the main logic of the Telegram bot
+    application to handle user interactions, store user preferences, and manage voucher-related transactions.
+    - Ensure proper error handling and exception catching when interacting with the database to maintain application
+    stability and data integrity.
+
+    Note: This class assumes familiarity with SQLite and basic database management concepts. Ensure that the
+    SQLite database file exists and has appropriate permissions for read and write operations.
+
+    Feel free to integrate and adapt this class to suit the specific requirements of your Telegram bot application!
+
+    """
     def __init__(self, db_file):
         self.db_file = db_file
 
