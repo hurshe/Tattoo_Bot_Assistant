@@ -16,6 +16,62 @@ db = DBManager('tattoo_bot_telegram.db')
 
 
 class AdminCommands:
+    """
+    AdminCommands Class Description
+
+    The `AdminCommands` class encapsulates a set of static methods tailored for administrative tasks within a Telegram 
+    bot application. These methods enable administrators to manage vouchers, view statistics, and perform other 
+    administrative actions. Each method handles specific functionalities, ensuring efficient administration and user 
+    interaction.
+    
+    Attributes: - None within the class itself, but the class utilizes external resources such as image paths for
+    sending media content.
+    
+    Static Methods:
+    
+    1. `admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Handles the main administrative command, displaying a menu of available admin options based on user privileges.
+       - Checks if the user is an admin or sub-admin and sends appropriate menu options.
+       
+    2. `add_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Initiates the process of adding a new voucher to the system by prompting the admin for voucher details.
+       - Provides instructions on how to add a voucher and cancel the operation if needed.
+    
+    3. `accept_add_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Validates and adds a new voucher to the system if it does not already exist.
+       - Notifies the admin of success or failure in adding the voucher.
+    
+    4. `statistics_command(update: Update, context: ContextTypes.DEFAULT_TYPE)` - Displays statistical
+    information related to voucher usage and sales. - Provides insights into the number of people who have used the 
+    bot, total vouchers sold, total sales amount, and the latest sale.
+    
+    5. `view_all_active_vouchers(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Displays all active vouchers available in the system.
+       - Allows the admin to navigate through the list of active vouchers.
+    
+    6. `view_selected_active_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Provides detailed information about a selected active voucher.
+       - Allows the admin to activate the selected voucher for use.
+    
+    7. `view_selected_deactivate_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Displays details of all deactivated vouchers.
+       - Notifies if there are no deactivated vouchers available.
+    
+    8. `activate_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Activates a selected voucher for use.
+       - Notifies the admin upon successful activation of the voucher.
+    
+    9. `send_db_file_in_chat(update: Update, context: ContextTypes.DEFAULT_TYPE)`
+       - Sends the database file to the chat.
+       - Allows the admin to retrieve the database file for external use or backup purposes.
+    
+    Usage: - These static methods can be called within the context of a Telegram bot application to perform various
+    administrative tasks such as managing vouchers, viewing statistics, and accessing the database. Each method provides 
+    specific functionalities to streamline the administration process and enhance user experience.
+    
+    Note: This class assumes integration with a Telegram bot application and utilizes external resources such as
+    image paths for media content."""
+    
     @staticmethod
     async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id = update.effective_chat.id
@@ -29,12 +85,14 @@ class AdminCommands:
                                                                     callback_data='activated')
             add_voucher_button = InlineKeyboardButton('➕ Добавить новый ваучер', callback_data='add_voucher')
             show_statistics_button = InlineKeyboardButton('📊 Показать статистику', callback_data='statistics')
+            get_db_file_in_chat_btn = InlineKeyboardButton('🗃️ Получить файл с базой данных', callback_data='db_in_chat')
             all_commands_button = InlineKeyboardButton('🤖Вернуться в главное меню', callback_data='all_commands')
 
             keyboard = InlineKeyboardMarkup([[check_voucher_button],
                                              [check_deactivated_voucher_button],
                                              [add_voucher_button],
                                              [show_statistics_button],
+                                             [get_db_file_in_chat_btn],
                                              [all_commands_button]])
 
             await context.bot.send_photo(chat_id=chat_id, photo=img_path.get('admin_image'), reply_markup=keyboard)
@@ -117,7 +175,6 @@ class AdminCommands:
     @staticmethod
     async def view_all_active_vouchers(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id = update.effective_chat.id
-        message_id = update.effective_message.message_id
         active_vouchers = db.get_all_active_voucher_code()
 
         buttons = {item[0]: item[0] for item in active_vouchers}
@@ -148,12 +205,11 @@ class AdminCommands:
     @staticmethod
     async def view_selected_active_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id = update.effective_chat.id
-        message_id = update.effective_message.message_id
         selected_voucher = db.get_selected_voucher(chat_id)
         price_of_selected_voucher = db.get_price_voucher(chat_id, selected_voucher)
 
         activate_button = InlineKeyboardButton('ACTIVATE', callback_data='activate')
-        back_button = InlineKeyboardButton('⏪ Назад', callback_data='admin')
+        back_button = InlineKeyboardButton('⏪ Назад', callback_data='check_voucher')
 
         keyboard = InlineKeyboardMarkup([[activate_button], [back_button]])
 
@@ -171,7 +227,6 @@ class AdminCommands:
     @staticmethod
     async def view_selected_deactivate_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id = update.effective_chat.id
-        message_id = update.effective_message.message_id
         selected_deactivate_voucher = db.get_deactivate_voucher(chat_id)
 
         back_button = InlineKeyboardButton('⏪ Назад', callback_data='admin')
@@ -202,6 +257,13 @@ class AdminCommands:
         activate = db.activate_voucher(chat_id)
         await context.bot.send_message(chat_id=chat_id, text=f"Ваучер:  {selected_voucher}  был активирован!")
         return activate
+
+    @staticmethod
+    async def send_db_file_in_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        chat_id = update.effective_chat.id
+        db_file = '/tattoo_bot_telegram.db'
+
+        await context.bot.send_document(chat_id=chat_id, document=db_file)
 
 
 img_path = {

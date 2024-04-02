@@ -21,6 +21,47 @@ db = DBManager('tattoo_bot_telegram.db')
 
 
 def check_payment_data(chat_id):
+    """
+    check_payment_data Function Description
+
+    The `check_payment_data` function verifies payment data for completed checkout sessions using the Stripe API. It
+    retrieves payment events of type "checkout.session.completed" from the Stripe API and iterates through each event
+    to identify successful payments matching the specified criteria.
+
+    Functionality:
+
+    - Retrieve Payment Events: Retrieves payment events of type "checkout.session.completed" from the Stripe API
+    using the `stripe.Event.list` method. The function iterates through the paginated list of events using
+    `auto_paging_iter`.
+
+    - Verify Payment Status: For each payment event, extracts the session data and checks the payment status. If
+    the payment status is "paid," proceeds with further verification.
+
+    - Check Dark Soul Code: Retrieves the Dark Soul code associated with the user's chat ID from the database.
+    Compares the Dark Soul code provided during the payment session with the Dark Soul code stored in the database.
+
+    - Process Valid Payment: If the Dark Soul code matches and the payment status is "paid," retrieves additional
+    payment details such as the payment value and customer email address. Stores the customer email address in the
+    database.
+
+    - Return Payment Data: Returns the customer email address, Dark Soul code, payment status (True for success),
+    payment value, and database update status.
+
+    Usage:
+
+    - Invoke this function to verify payment data for completed checkout sessions processed through the Stripe API.
+    - Ensure that the function is triggered periodically or in response to specific events to keep payment data
+    up-to-date.
+    - Customize the payment verification criteria based on your application's requirements,
+    such as additional fields or validation checks.
+    - Handle any errors or exceptions that may occur during the
+    payment verification process, such as network issues or invalid data.
+
+    Note: This function relies on the Stripe API for retrieving payment events and requires proper configuration
+    and authentication with your Stripe account. Ensure that your Stripe API keys are securely stored and managed.
+
+    Feel free to integrate and adapt this function to suit the specific payment processing needs of your application!"""
+
     payment_events = stripe.Event.list(type="checkout.session.completed")
 
     for event in payment_events.auto_paging_iter():
@@ -41,6 +82,28 @@ def check_payment_data(chat_id):
 
 
 class VoucherCommands:
+    """
+    This class provides methods to handle various voucher-related commands in a Telegram bot.
+
+    Methods: - voucher_command(update: Update, context: ContextTypes.DEFAULT_TYPE): Displays options for vouchers.
+    - price_command(update: Update, context: ContextTypes.DEFAULT_TYPE): Displays price options for vouchers.
+    - price_more_command(update: Update, context: ContextTypes.DEFAULT_TYPE): Provides additional information about
+    voucher prices.
+    - manage_payment_or_price(update: Update, context: ContextTypes.DEFAULT_TYPE): Manages payment
+    actions and voucher prices.
+    - paper_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE): Displays options
+    for paper vouchers.
+    - check_payment_intent(update: Update, context: ContextTypes.DEFAULT_TYPE): Checks the status
+    of payment intent.
+    - get_voucher_in_chat(update: Update, context: ContextTypes.DEFAULT_TYPE): Sends a voucher to
+    the user via chat.
+    - user_vouchers(update: Update, context: ContextTypes.DEFAULT_TYPE): Displays a user's
+    vouchers.
+    - user_active_vouchers(update: Update, context: ContextTypes.DEFAULT_TYPE): Displays active vouchers
+    for the user.
+    - view_selected_user_active_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE): Views
+    selected active vouchers for the user.
+    """
 
     @staticmethod
     async def voucher_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -114,11 +177,11 @@ class VoucherCommands:
         dark_soul_code = ''.join(secrets.choice(randomizer) for i in range(5))
         db.add_dark_soul_code(dark_soul_code, chat_id)
         payment_actions = {
-            '300': 'https://t.me/ragualt_bot/voucher_300_pln',
-            '600': 'https://t.me/ragualt_bot/dark_shop',
-            '800': 'https://t.me/ragualt_bot/voucher_800pln',
-            '1000': 'https://t.me/ragualt_bot/voucher_1000pln',
-            '5': 'https://t.me/ragualt_bot/voucher_5_pln'
+            '300': 'https://t.me/tattoo_assistant_bot/payment_300_pln',
+            '600': 'https://t.me/tattoo_assistant_bot/payment_600_pln',
+            '800': 'https://t.me/tattoo_assistant_bot/payment_800_pln',
+            '1000': 'https://t.me/tattoo_assistant_bot/payment_1000_pln',
+            '5': 'https://t.me/tattoo_assistant_bot/payment_5_pln'
         }
 
         if selected_value in payment_actions:

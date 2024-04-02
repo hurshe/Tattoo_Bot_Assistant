@@ -1,6 +1,37 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes, ConversationHandler
 
+"""
+Voucher Addition Conversation Functions
+
+These async functions collectively handle a conversation flow for adding a voucher in a Telegram bot application. The 
+conversation involves asking the user questions about the voucher details and allowing them to provide answers 
+interactively.
+
+Function 1: add_voucher_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
+
+Initiates the voucher addition process by asking the user the first question about the voucher.
+Replies to the user with the first question.
+Returns the key corresponding to the first question in the questions dictionary.
+Function 2: question_1(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
+
+Stores the user's answer to the first question in the user_answers dictionary.
+Asks the user the second question about the voucher.
+Replies to the user with the second question.
+Returns the key corresponding to the second question in the questions dictionary.
+Function 3: question_2(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
+
+Stores the user's answer to the second question in the user_answers dictionary.
+Displays the collected voucher details to the user for confirmation, along with options to save or change the details.
+Ends the conversation flow.
+Returns ConversationHandler.END to signify the end of the conversation.
+Function 4: cancel(update: Update, context: ContextTypes.DEFAULT_TYPE)
+
+Cancels the voucher addition process by clearing the user_answers dictionary. Replies to the user indicating that the 
+survey has been canceled. These functions are designed to be integrated into a conversation handler within the 
+Telegram bot application, allowing for an interactive flow when adding vouchers. Users can provide answers to 
+questions sequentially, and the bot guides them through the process with appropriate responses and options. 
+Additionally, the cancel function provides a way for users to abort the process if needed."""
 
 questions = {
     'question_1': 'Напишите id для идентификации ваучера',

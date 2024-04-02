@@ -30,6 +30,34 @@ voucher_commands = VoucherCommands()
 
 
 async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Button Click Function Description
+
+    The `button_click` function manages user interactions with inline buttons in a Telegram bot application. It
+    handles various button clicks by updating user data in the database and triggering appropriate actions based on
+    the clicked button.
+
+    Functionality:
+
+    - Retrieves necessary information from the update, such as callback query data, chat ID, message ID,
+    and user details. - Establishes a connection to the database and creates a cursor for executing SQL queries. -
+    Handles different types of button clicks, including FAQ actions, voucher selections, function actions,
+    admin actions, price actions, and language actions. - Updates user data in the database based on the clicked
+    button, such as selected language, function, FAQ option, price selection, and voucher selection. - Handles
+    language changes by resetting previously selected data. - Commits the changes to the database and closes the
+    database connection. - Invokes the `data_controller` function to handle further actions based on the updated user
+    data.
+
+    Usage: - This function is designed to be integrated into a Telegram bot application's inline button handling
+    logic. - It allows users to interact with the bot by clicking inline buttons and dynamically updates user data
+    based on their actions. - The function ensures smooth user experience by managing various interactions seamlessly
+    and updating the database accordingly.
+
+    Note: Ensure that the bot has the necessary permissions to interact with inline buttons and access the database.
+
+    Feel free to use and integrate this function into your Telegram bot application for handling inline button clicks
+    effectively!"""
+
     query = update.callback_query
     new_element = query.data
     chat_id = update.effective_chat.id
@@ -101,6 +129,38 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def data_controller(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Data Controller Function Description
+
+    The `data_controller` function manages the flow of data processing and response generation based on user
+    interactions in a Telegram bot application. It orchestrates actions such as retrieving or deleting data from the
+    database, handling user-selected options, and navigating between different functionalities.
+
+    Functionality:
+
+    - Retrieves essential data from the database, including selected language, FAQ option, selected function,
+    selected voucher, and selected price. - Determines the appropriate action based on the retrieved data,
+    such as displaying FAQ information, executing selected functions, managing voucher-related actions, or handling
+    language changes. - Generates dynamic responses tailored to user interactions, including sending messages,
+    photos, or inline keyboard options. - Utilizes inline keyboards to provide users with interactive options,
+    such as navigating back to the main menu or accessing specific functionalities. - Deletes unnecessary data from
+    the database after processing user requests to ensure data cleanliness and optimize performance. - Ensures
+    consistency in language selection by redirecting users to the main menu if the selected language changes.
+
+    Usage:
+
+    - This function is designed to be integrated into the main logic of a Telegram bot application, serving as a
+    central controller for processing user interactions and managing data flow. - It facilitates seamless
+    communication between users and the bot by dynamically responding to user actions and providing relevant
+    information or functionalities. - The function enhances user experience by handling various scenarios
+    intelligently and guiding users through different features or options available in the bot.
+
+    Note: Ensure that the necessary dependencies, such as database access functions and command execution logic,
+    are properly implemented and accessible within the function.
+
+    Feel free to integrate and adapt this function to suit the specific requirements of your Telegram bot
+    application!"""
+
     chat_id = update.effective_chat.id
     message_id = update.effective_message.message_id
 
@@ -230,6 +290,7 @@ data_to_chat = {
     'activate': admin_commands.activate_voucher,
     'activated': admin_commands.view_selected_deactivate_voucher,
     'admin': admin_commands.admin_command,
+    'db_in_chat': admin_commands.send_db_file_in_chat,
 
     'voucher': voucher_commands.voucher_command,
     'e_voucher': voucher_commands.price_command,
@@ -292,5 +353,6 @@ actions = {
     'admin_actions': {
         'statistics': 'statistics',
         'add_voucher': 'add_voucher',
-        'check_voucher': 'check_voucher'}
+        'check_voucher': 'check_voucher',
+        'db_in_chat': 'db_in_chat'}
 }
