@@ -131,7 +131,6 @@ class VoucherCommands:
         chat_id = update.effective_chat.id
         lang = db.get_selected_lang(chat_id)
 
-        button_5 = InlineKeyboardButton('5 PLN', callback_data='5')
         button_300 = InlineKeyboardButton('300 PLN', callback_data='300')
         button_600 = InlineKeyboardButton('600 PLN', callback_data='600')
         button_800 = InlineKeyboardButton('800 PLN', callback_data='800')
@@ -143,13 +142,12 @@ class VoucherCommands:
             [
                 [button_300, button_600],
                 [button_800, button_1000],
-                [button_5],
                 [more_button],
                 [back_button]
             ])
 
         await delete_messages(update, context)
-        await context.bot.send_photo(chat_id=chat_id, photo='bot_app/media/money.jpg',
+        await context.bot.send_photo(chat_id=chat_id, photo=voucher_messages['money_img'],
                                      caption=voucher_messages[lang]['price_info'], reply_markup=keyboard)
 
     @staticmethod
@@ -157,8 +155,9 @@ class VoucherCommands:
         chat_id = update.effective_chat.id
         lang = db.get_selected_lang(chat_id)
 
-        instagram_keyboard = InlineKeyboardButton("Instagram", url='https://www.instagram.com/alexandr_darksoul/')
-        linkedin_keyboard = InlineKeyboardButton('Facebook', url='https://www.facebook.com/AlexINKINK/')
+        instagram_keyboard = InlineKeyboardButton("Instagram", url='https://www.instagram.com/alexsun_darksoul/')
+        linkedin_keyboard = InlineKeyboardButton('Facebook',
+                                                 url='https://www.facebook.com/profile.php?id=100089965814206')
         back_button = InlineKeyboardButton(voucher_messages[lang]['back_btn'], callback_data='change_price')
 
         keyboard = InlineKeyboardMarkup([[instagram_keyboard, linkedin_keyboard], [back_button]])
@@ -205,8 +204,9 @@ class VoucherCommands:
         chat_id = update.effective_chat.id
         lang = db.get_selected_lang(chat_id)
 
-        inst_button = InlineKeyboardButton('Instagram', url='https://www.instagram.com/alexandr_darksoul/')
-        facebook_button = InlineKeyboardButton('Facebook', url='https://www.facebook.com/AlexINKINK/')
+        inst_button = InlineKeyboardButton('Instagram', url='https://www.instagram.com/alexsun_darksoul/')
+        facebook_button = InlineKeyboardButton('Facebook',
+                                               url='https://www.facebook.com/profile.php?id=100089965814206')
         back_button = InlineKeyboardButton(voucher_messages[lang]['back_btn'], callback_data='voucher')
 
         keyboard = InlineKeyboardMarkup([[inst_button, facebook_button], [back_button]])
@@ -223,7 +223,8 @@ class VoucherCommands:
         code = string.ascii_uppercase + string.ascii_lowercase + string.digits
         serial_number = ''.join(secrets.choice(code) for i in range(10))
 
-        user_vouchers_button = InlineKeyboardButton(voucher_messages[lang]['my_vouchers_btn'], callback_data='user_vouchers')
+        user_vouchers_button = InlineKeyboardButton(voucher_messages[lang]['my_vouchers_btn'],
+                                                    callback_data='user_vouchers')
         main_menu_button = InlineKeyboardButton(voucher_messages[lang]['main_menu_btn'], callback_data='all_commands')
 
         keyboard = InlineKeyboardMarkup([[user_vouchers_button], [main_menu_button]])
@@ -250,11 +251,13 @@ class VoucherCommands:
         chat_id = update.effective_chat.id
         lang = db.get_selected_lang(chat_id)
 
-        back_button = InlineKeyboardButton(voucher_messages[lang]['back_btn'], callback_data='selected_user_active_voucher')
+        back_button = InlineKeyboardButton(voucher_messages[lang]['back_btn'],
+                                           callback_data='selected_user_active_voucher')
         keyboard = InlineKeyboardMarkup([[back_button]])
 
         await delete_messages(update, context)
-        await context.bot.send_message(chat_id=chat_id, text=voucher_messages[lang]['voucher_in_chat'], reply_markup=keyboard)
+        await context.bot.send_message(chat_id=chat_id, text=voucher_messages[lang]['voucher_in_chat'],
+                                       reply_markup=keyboard)
         await context.bot.send_document(chat_id=chat_id, document=e_voucher_generator_pdf(chat_id)[0])
 
     @staticmethod
@@ -322,4 +325,3 @@ class VoucherCommands:
                                        text=(voucher_messages[lang]['user_selected_voucher']) % (
                                            selected_voucher, price_of_selected_voucher),
                                        reply_markup=keyboard)
-

@@ -61,36 +61,32 @@ async def delete_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 main_messages = {
     'RU': {
-        'faq': "Выбирите что вас интересует :",
-        'kontakt': "🔥Подписывайся что бы быть вкурсе всех событий🔥",
+        'kontakt': "_______‍ПОДПИСЫВАЙСЯ________"
+                   "📱  Будь в курсе всех событий  📱",
         'localization': "📍Wojciecha Górskiego 4, Warszawa",
-
-        'all_commands': "Выберите нужную комманду:",
         'back_btn': '⏪ Назад'
-
     },
     'ENG': {
-        'faq': "Choise the option :",
-        'kontakt': "🔥Subscribe to stay informed about all events🔥",
+        'kontakt': "__________SUBSCRIBE__________"
+                   "📱Stay informed about all events📱",
         'localization': "📍Wojciecha Górskiego 4, Warszawa",
-        'all_commands': "Choose command that you need:",
         'back_btn': '⏪ Back'
-
     },
     'PL': {
-        'faq': "Wybierz o czym chcesz wiedzieć :",
-        'kontakt': "🔥Subskrybuj, aby być na bieżąco ze wszystkimi wydarzeniami🔥",
+        'kontakt': "________SUBSKRYBUJ_________"
+                   "📱      Aktualności na bieżąco      📱",
         'localization': "📍Wojciecha Górskiego 4, Warszawa",
-        'all_commands': "Wybierz commendę która ci potrzebna:",
         'back_btn': '⏪ Wstecz'
     },
 
     'admin_info': 'Нажми на "CHECK VOUCHER" что бы проверить ваучер клиента!',
 
+    'start_image': 'bot_app/media/start_img.png',
     'stat_image': 'bot_app/media/statistic_photo.jpg',
+    'main_menu_image': 'bot_app/media/main_menu_img.png',
     'admin_image': 'bot_app/media/admin_image.jpg',
-    'faq_image': 'bot_app/media/FAQ/FAQ-picture.jpg',
-    'instagram_image': 'bot_app/media/instagram.jpg',
+    'faq_image': 'bot_app/media/FAQ/main_faq.png',
+    'instagram_image': 'bot_app/media/instagram.png',
     'error_lang_image': 'bot_app/media/error_lang.png',
     'admin_error': 'bot_app/media/denied.jpg',
     'active_vouchers_img': 'bot_app/media/active_voucher.jpg',
@@ -113,15 +109,9 @@ voucher_messages = {
                       "❗Цена в польских злотых (PLN)",
         'price_more_info': "Если ваучер превишает сумму 1000 PLN, вам нужно связаться с мастером!\n"
                            "Вот его контакты📱:",
-        'paper_voucher': "Приобретение бумажного ваучера у мастера - это исключительная возможность получить не только"
-                         " услугу высокого качества, но и уникальный опыт.\n\n"
-                         "Бумажный ваучер не только является физическим подтверждением вашего выбора,"
-                         " но и становится ценным сувениром, "
-                         "сохраняющим память о вашем визите к мастеру.\n\n"
-                         "Это также отличный подарок для друзей или близких, позволяющий им насладиться "
-                         "профессиональными услугами мастера и создать незабываемые впечатления.\n\n"
-                         "Если вы хотите приобрести бумажную версию ваучера то вам нужно связаться с тату мастером!\n\n"
-                         "Вот его контакты📱:",
+        'paper_voucher': "🎁Бумажный ваучер от мастера — это не только возможность получить качественную услугу, но и уникальный сувенир на память.\n\n"
+                         "Бумажный ваучер станет отличным подарком для близких, даря незабываемые эмоции и профессиональный подход. \n\n"
+                         "Чтобы приобрести ваучер, свяжитесь с мастером!\nКонтакты📱:",
         'payment': "Вы выбрали %s PLN.\n\n"
                    "✅Для оплаты, нажмите [PAY]\n"
                    "🔁Изменить цену, нажмите [CHANGE "
@@ -200,19 +190,10 @@ voucher_messages = {
         'price_info': "😍 Choose the amount for the voucher\n❗Price in Polish Zloty (PLN)",
         'price_more_info': "If the voucher exceeds the amount of 1000 PLN, you need to contact the artist!\n"
                            "Here are his contact details📱:",
-        'paper_voucher': "Purchasing a paper voucher from the master is an exceptional opportunity to receive not only "
-                         "high-quality service but also a unique experience.\n\n"
-
-                         "The paper voucher serves not only as a physical confirmation of your choice but also becomes"
-                         " a valuable keepsake, preserving memories of your visit to the master.\n\n"
-
-                         "It's also an excellent gift for friends or loved ones, allowing them to enjoy the master's"
-                         " professional services and create unforgettable impressions.\n\n"
-
-                         "If you wish to acquire a paper version of the voucher, you need to contact the tattoo "
-                         "master!\n\n"
-
-                         "Here are his contacts details📱:",
+        'paper_voucher': "🎁 A paper voucher from the artist is not only an opportunity to receive high-quality service but also a unique souvenir to remember.\n\n"
+                         "The paper voucher will make a great gift for your loved ones, bringing unforgettable emotions and a professional touch.\n\n"
+                         "To purchase the voucher, contact the artist!\n"
+                         "Contacts📱:",
         'payment': "You choose %s PLN.\n\n"
                    "✅If price is correct click [PAY]\n"
                    "🔁For change price click [CHANGE PRICE]\n\n"
@@ -291,19 +272,10 @@ voucher_messages = {
         'price_info': "😍Wybierz kwotę vouchera\n"
                       "❗Cena w polskich złotych (PLN)",
         'price_more_info': "",
-        'paper_voucher': "Zakup vouchera papierowego u mistrza to nie tylko możliwość skorzystania z wysokiej "
-                           "jakości usług, ale również wyjątkowe doświadczenie.\n\n"
-
-                           "Voucher papierowy pełni funkcję potwierdzenia wyboru oraz cenny pamiątkę, "
-                           "przechowującą wspomnienia z wizyty u mistrza.\n\n"
-
-                           "To także doskonały prezent dla przyjaciół lub bliskich, pozwalający im cieszyć się "
-                           "profesjonalnymi usługami mistrza i tworzyć niezapomniane wspomnienia.\n\n"
-
-                           "Jeśli chcesz nabyć papierową wersję vouchera, musisz skontaktować się "
-                           "z mistrzem tatuażu!\n\n"
-
-                           "Oto jego kontakty 📱:",
+        'paper_voucher': "🎁 Papierowy voucher od mistrza to nie tylko możliwość skorzystania z wysokiej jakości usługi, ale także unikalna pamiątka.\n\n"
+                         "Papierowy voucher będzie doskonałym prezentem dla bliskich, dając niezapomniane emocje i profesjonalne podejście.\n\n"
+                         "Aby zakupić voucher, skontaktuj się z mistrzem!\n"
+                         "Kontakty📱:",
 
         'payment': f"Wybrałeś-(aś) %s PLN.\n\n"
                    f"✅Aby zapłacić, kliknij [PAY]\n"
@@ -367,11 +339,11 @@ voucher_messages = {
         'main_menu_btn': '⏪ MENU GŁOWNE',
         'my_vouchers_btn': '⏩ MOJE WOUCZERY'
     },
-    'user_vouchers_img': 'bot_app/media/Voucher/user_vouchers.jpg',
-    'kontakt_image': 'bot_app/media/instagram.jpg',
-    'price_more_image': 'bot_app/media/information_price.jpg',
-    'payment_img': 'bot_app/media/payment.jpg',
+    'user_vouchers_img': 'bot_app/media/Voucher/my_vouchers_img.png',
+    'kontakt_image': 'bot_app/media/instagram.png',
+    'price_more_image': 'bot_app/media/more_image.jpg',
+    'payment_img': 'bot_app/media/payment_img.png',
     'money_img': 'bot_app/media/money.jpg',
     'voucher_img': 'bot_app/media/Voucher/main_voucher_img.png',
-    'paper_voucher_img': "bot_app/media/Voucher/paper_voucher.jpg",
+    'paper_voucher_img': "bot_app/media/Voucher/paper_voucher_image.png",
 }

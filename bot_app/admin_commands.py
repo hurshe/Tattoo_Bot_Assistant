@@ -100,7 +100,7 @@ class AdminCommands:
             back_button = InlineKeyboardButton('⏪ Назад', callback_data='all_commands')
             keyboard = InlineKeyboardMarkup([[back_button]])
 
-            await context.bot.send_photo(chat_id=chat_id, photo='media/denied.jpg',
+            await context.bot.send_photo(chat_id=chat_id, photo='bot_app/media/denied.jpg',
                                          caption="Отказано в доступе. Access Denied. Odmowa dostępu.",
                                          reply_markup=keyboard)
 

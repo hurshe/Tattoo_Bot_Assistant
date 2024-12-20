@@ -72,21 +72,16 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     cursor.execute('''INSERT INTO users 
         (chat_id, message_id, user_name, email, selected_lang, previous_lang,
-         selected_func, prev_func, faq_option, selected_price, previous_price, selected_voucher, user_selected_voucher, dark_soul_code)
-        SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+         selected_func, prev_func, selected_price, previous_price, selected_voucher, user_selected_voucher, dark_soul_code)
+        SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         WHERE NOT EXISTS (SELECT 1 FROM users WHERE chat_id = ?)''',
-                   (chat_id, message_id, user_name, None, first_lang, prev_language, None, prev_func, None, None, None, None, None, None, chat_id))
+                   (chat_id, message_id, user_name, None, first_lang, prev_language, None, prev_func, None, None, None, None, None, chat_id))
 
     unpacked_voucher_codes = cursor.execute("SELECT voucher_id FROM vouchers").fetchall()
     voucher_codes = [(item[0]) for item in unpacked_voucher_codes]
     user_voucher_codes = [f'{item[0]}-{chat_id}' for item in unpacked_voucher_codes]
 
-    if new_element in actions['faq_actions']:
-        faq_option = new_element
-        cursor.execute("UPDATE users SET selected_price = ? WHERE chat_id = ?", (None, chat_id))
-        cursor.execute("UPDATE users SET faq_option = ? WHERE chat_id = ?", (faq_option, chat_id,))
-
-    elif new_element in user_voucher_codes:
+    if new_element in user_voucher_codes:
         user_selected_voucher = new_element
         cursor.execute("UPDATE users SET user_selected_voucher = ? WHERE chat_id = ?", (user_selected_voucher, chat_id))
         cursor.execute("UPDATE users SET selected_voucher =? WHERE chat_id = ? ", (None, chat_id))
@@ -168,7 +163,6 @@ async def data_controller(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lang = db.get_selected_lang(chat_id)
     prev_lang = db.get_prev_lang(chat_id)
     price = db.get_selected_value(chat_id)
-    user_data = db.get_faq_option(chat_id)
     selected_function = db.get_selected_func(chat_id)
     func = data_to_chat.get(selected_function)
     selected_voucher = db.get_selected_voucher(chat_id)
@@ -178,21 +172,7 @@ async def data_controller(update: Update, context: ContextTypes.DEFAULT_TYPE):
     all_commands_button = InlineKeyboardButton(data_to_chat[lang]['main_menu_btn'], callback_data='all_commands')
     keyboard = InlineKeyboardMarkup([[all_commands_button]])
 
-    if user_data is not None and lang is not None:
-        button_text = data_to_chat[lang][user_data + '_button']
-        info_button = InlineKeyboardButton(button_text, url=data_to_chat[lang][user_data])
-        back_button = InlineKeyboardButton('<<< BACK', callback_data='faq')
-        info = InlineKeyboardMarkup([[info_button], [back_button]])
-
-        await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
-        await delete_messages(update, context)
-
-        await context.bot.send_photo(chat_id=chat_id,
-                                     photo=data_to_chat.get(user_data),
-                                     reply_markup=info)
-        return clear_unnecessary_data
-
-    elif selected_function is not None:
+    if selected_function is not None:
         await func(update, context)
         return clear_unnecessary_data
 
@@ -217,7 +197,7 @@ async def data_controller(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=chat_id, text=data_to_chat[lang]['same_lang'], reply_markup=keyboard)
 
 
-#                   FAQ VIDEO PATH
+#                   FAQ IMAGE PATH
 how_care_image_path = 'bot_app/media/FAQ/FAQ-picture.jpg'
 how_much_image_path = 'bot_app/media/FAQ/FAQ-picture.jpg'
 how_prepare_image_path = 'bot_app/media/FAQ/FAQ-picture.jpg'
@@ -233,10 +213,12 @@ data_to_chat = {
         'care': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
         'how_to': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
         'how_much': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
+        'consult': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
         'same_lang': "🫡Этот язык был уже выбран!",
         'care_button': 'Уход за тату',
         'how_to_button': 'Подготовка к снансу',
         'how_much_button': 'Формирование цены',
+        'consult_button': 'Консультация',
         'main_menu_btn': 'ГЛАВНОЕ МЕНЮ',
     },
     'ENG': {
@@ -248,7 +230,8 @@ data_to_chat = {
 
         'care': 'https://telegra.ph/Tattoo-care-03-12',
         'how_to': 'https://telegra.ph/Tattoo-care-03-12',
-        'how_much': 'https://telegra.ph/Tattoo-care-03-12',
+        'how_much': 'https://telegra.ph/Tattoo-Pricing-10-29',
+        'consult': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
         'same_lang': "🫡This language already selected!",
         'care_button': 'Tattoo care',
         'how_to_button': 'Preparing for the session',
@@ -265,6 +248,7 @@ data_to_chat = {
         'care': 'https://telegra.ph/Pielęgnacja-tatuaużu-03-12',
         'how_to': 'https://telegra.ph/Pielęgnacja-tatuaużu-03-12',
         'how_much': 'https://telegra.ph/Pielęgnacja-tatuaużu-03-12',
+        'consult': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
         'same_lang': "🫡Ten język jest już wybrany!",
         'care_button': 'Pielęgnacja tatuażu',
         'how_to_button': 'Przygotowanie do sesji',
@@ -275,6 +259,7 @@ data_to_chat = {
     'care': how_care_image_path,
     'how_to': how_prepare_image_path,
     'how_much': how_much_image_path,
+    'consult': how_much_image_path,
 
     'start': main_commands.start_command,
     'faq': main_commands.faq_command,
@@ -315,7 +300,8 @@ actions = {
 
     'faq_actions': {'care': 'care',
                     'how_to': 'how_to',
-                    'how_much': 'how_much'},
+                    'how_much': 'how_much',
+                    'consult': 'consult'},
 
     'price_actions': {'5': '5',
                       '300': '300',

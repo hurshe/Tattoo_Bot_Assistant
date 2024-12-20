@@ -31,7 +31,6 @@ class MainMenuCommands:
     2. `kontakt_command(update: Update, context: ContextTypes.DEFAULT_TYPE)`
        - Displays contact information, including Instagram and Facebook links.
        - Allows users to return to the main menu.
-
     3. `faq_command(update: Update, context: ContextTypes.DEFAULT_TYPE)`
        - Provides access to frequently asked questions (FAQs) categorized by language.
        - Enables users to navigate through different FAQ topics and return to the main menu.
@@ -69,9 +68,9 @@ class MainMenuCommands:
                 await delete_messages(update, context)
         except Exception as e:
             return e
-        await context.bot.send_message(chat_id=chat_id,
-                                       text="Выберите язык     Choose your language    Wybierz język:",
-                                       reply_markup=keyboard)
+        await context.bot.send_photo(chat_id=chat_id,
+                                     photo=main_messages.get('start_image'),
+                                     reply_markup=keyboard)
 
     @staticmethod
     async def kontakt_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -79,8 +78,8 @@ class MainMenuCommands:
         message_id = update.effective_message.message_id
         lang = db.get_selected_lang(chat_id)
 
-        instagram_button = InlineKeyboardButton("Instagram", url='https://www.instagram.com/alexandr_darksoul/')
-        facebook_button = InlineKeyboardButton('Facebook', url='https://www.facebook.com/AlexINKINK/')
+        instagram_button = InlineKeyboardButton("INSTAGRAM", url='https://www.instagram.com/alexsun_darksoul/')
+        facebook_button = InlineKeyboardButton('FACEBOOK', url='https://www.facebook.com/profile.php?id=100089965814206')
         back_button = InlineKeyboardButton(main_messages[lang]['back_btn'], callback_data='all_commands')
 
         keyboard = InlineKeyboardMarkup([[instagram_button, facebook_button], [back_button]])
@@ -98,21 +97,24 @@ class MainMenuCommands:
 
         language_buttons = {
             'RU': [
-                ('Подготовка к сеансу', 'how_to'),
-                ('Уход за тату', 'care'),
-                ('От чего зависит цена', 'how_much'),
+                ('♻️ Подготовка к сеансу', 'https://telegra.ph/Podgotovka-k-seansu-11-05'),
+                ('✅ Правильный уход за тату', 'https://telegra.ph/Uhod-za-tatuirovkoj-11-04'),
+                ('💸 Формирование цены', 'https://telegra.ph/Cenoobrazovanie-tatuirovok-10-29'),
+                ('🧾 Для чего нужна консультация', 'https://telegra.ph/Konsultaciya-11-15-2'),
                 (main_messages[lang]['back_btn'], 'all_commands')
             ],
             'ENG': [
-                (' Preparation to session ', 'how_to'),
-                (' How care to youre tattoo ', 'care'),
-                ('Pricing', 'how_much'),
+                ('♻️ Tattoo Session Prep Guide', 'https://telegra.ph/Preparing-for-the-Session-11-26-6'),
+                ('✅ Tattoo Aftercare Guide', 'https://telegra.ph/Tattoo-Aftercare-Guide-11-26-2'),
+                ('💸 Tattoo Pricing Guide', 'https://telegra.ph/Tattoo-Pricing-Guide-11-26-6'),
+                ('🧾 Tattoo Consultation Overview', 'https://telegra.ph/Tattoo-Consultation-Overview-11-26'),
                 (main_messages[lang]['back_btn'], 'all_commands')
             ],
             'PL': [
-                ('Przygotowanie do sesji ', 'how_to'),
-                ('Pielęgacja tatuażu ', 'care'),
-                ('Cennik ', 'how_much'),
+                ('♻️ Przygotowanie do sesji tatuażu', 'https://telegra.ph/Przygotowanie-przed-sesją-11-28-6'),
+                ('✅ Pielęgnacja Tatuażu', 'https://telegra.ph/Pielęgnacja-tatuażu-12-01-2'),
+                ('💸 Formowanie ceny na tatuaże', 'https://telegra.ph/Formowanie-ceny-na-tatuaże-12-01-5'),
+                ('🧾 Cel i Zakres Konsultacji', 'https://telegra.ph/Cel-i-Zakres-Konsultacji-12-01-3'),
                 (main_messages[lang]['back_btn'], 'all_commands')
             ]
         }
@@ -121,7 +123,9 @@ class MainMenuCommands:
 
         for lang_key, buttons in language_buttons.items():
             keyboard[lang_key] = InlineKeyboardMarkup([
-                [InlineKeyboardButton(text, callback_data=callback)] for text, callback in buttons
+                [InlineKeyboardButton(text, url=url if 'http' in url else None,
+                                      callback_data=url if 'http' not in url else None)]
+                for text, url in buttons
             ])
 
         selected_keyboard = keyboard.get(lang)
@@ -129,7 +133,6 @@ class MainMenuCommands:
         await context.bot.deleteMessage(chat_id=chat_id, message_id=message_id)
         await delete_messages(update, context)
         await context.bot.send_photo(chat_id=chat_id, photo=main_messages.get('faq_image'),
-                                     caption=main_messages[lang].get('faq'),
                                      reply_markup=selected_keyboard)
 
     @staticmethod
@@ -184,8 +187,9 @@ class MainMenuCommands:
                 await delete_messages(update, context)
         except Exception as e:
             return e
-        await context.bot.send_message(chat_id=chat_id,
-                                       text=main_messages[lang]['all_commands'],
-                                       reply_markup=keyboard_markup)
+        await context.bot.send_photo(chat_id=chat_id,
+                                     photo=main_messages.get('main_menu_image'),
+                                     reply_markup=keyboard_markup)
+
         return delete_prev_func
 

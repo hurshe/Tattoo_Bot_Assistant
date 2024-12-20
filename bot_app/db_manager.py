@@ -75,7 +75,6 @@ class DBManager:
                                 previous_lang VARCHAR,
                                 selected_func VARCHAR,
                                 prev_func VARCHAR,
-                                faq_option VARCHAR,
                                 selected_price VARCHAR,
                                 previous_price VARCHAR,
                                 selected_voucher VARCHAR,
@@ -144,14 +143,6 @@ class DBManager:
         selected_func = cursor.fetchone()
         conn.close()
         return selected_func[0] if selected_func is not None else None
-
-    def get_faq_option(self, chat_id):
-        conn = self.create_connection()
-        cursor = conn.cursor()
-        cursor.execute("SELECT faq_option FROM users WHERE chat_id = ?", (chat_id,))
-        faq_option = cursor.fetchone()
-        conn.close()
-        return faq_option[0] if faq_option is not None else None
 
     def get_selected_value(self, chat_id):
         conn = self.create_connection()
@@ -268,9 +259,8 @@ class DBManager:
         cursor = conn.cursor()
 
         cursor.execute('''UPDATE users SET 
-                          faq_option = ?, 
                           selected_func = ?
-                          WHERE chat_id = ?''', (None, None, chat_id))
+                          WHERE chat_id = ?''', (None, chat_id))
 
         conn.commit()
         conn.close()
