@@ -92,7 +92,8 @@ async def send_email_with_attachment(update: Update, context: ContextTypes.DEFAU
         server.sendmail(from_email, to_email, text)
         server.quit()
 
-        back_button = InlineKeyboardButton(email_text_to_send[lang]['back_btn'], callback_data='selected_user_active_voucher')
+        back_button = InlineKeyboardButton(email_text_to_send[lang]['back_btn'],
+                                           callback_data='selected_user_active_voucher')
         keyboard = InlineKeyboardMarkup([[back_button]])
 
         await delete_messages(update, context)
