@@ -94,15 +94,15 @@ class AdminCommands:
                                              [show_statistics_button],
                                              [get_db_file_in_chat_btn],
                                              [all_commands_button]])
-
-            await context.bot.send_photo(chat_id=chat_id, photo=img_path.get('admin_image'), reply_markup=keyboard)
+            with open('bot_app/media/admin_image.jpg', 'rb') as image_file:
+                await context.bot.send_photo(chat_id=chat_id, photo=image_file, reply_markup=keyboard)
         else:
             back_button = InlineKeyboardButton('⏪ Назад', callback_data='all_commands')
             keyboard = InlineKeyboardMarkup([[back_button]])
-
-            await context.bot.send_photo(chat_id=chat_id, photo='bot_app/media/denied.jpg',
-                                         caption="Отказано в доступе. Access Denied. Odmowa dostępu.",
-                                         reply_markup=keyboard)
+            with open('bot_app/media/denied.jpg', 'rb') as image_file:
+                await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                             caption="Отказано в доступе. Access Denied. Odmowa dostępu.",
+                                             reply_markup=keyboard)
 
     @staticmethod
     async def add_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -160,9 +160,10 @@ class AdminCommands:
         keyboard = InlineKeyboardMarkup([[back_button]])
 
         await delete_messages(update, context)
-        await context.bot.send_photo(chat_id=chat_id,
-                                     photo=img_path.get('stat_image'),
-                                     caption=f"🧍 Людей посетило TattooBotAssistant:\n"
+        with open('bot_app/media/statistic_img.jpg', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id,
+                                         photo=image_file,
+                                         caption=f"🧍 Людей посетило TattooBotAssistant:\n"
                                              f"-------->  {people} человек\n"
                                              f"🔥 Ваучеров было проданно вообщем:\n"
                                              f"-------->  {sold_vouchers} ваучеров\n"
@@ -170,7 +171,7 @@ class AdminCommands:
                                              f"-------->  {amount_sales} PLN\n"
                                              f"📆 Была совершена последняя покупка:\n"
                                              f"-------->  {last_sold_voucher}",
-                                     reply_markup=keyboard)
+                                         reply_markup=keyboard)
 
     @staticmethod
     async def view_all_active_vouchers(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -195,12 +196,14 @@ class AdminCommands:
         await delete_messages(update, context)
 
         if not active_vouchers:
-            await context.bot.send_photo(chat_id=chat_id, photo=img_path.get('empty_data'),
-                                         caption="Пока купленных ваучеров нет.", reply_markup=keyboard_markup)
+            with open('bot_app/media/empty_data.jpg', 'rb') as image_file:
+                await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                             caption="Пока купленных ваучеров нет.", reply_markup=keyboard_markup)
         else:
-            await context.bot.send_photo(chat_id=chat_id, photo=img_path.get('active_vouchers_img'),
-                                         caption='✅ Все активные ваучеры (еще не использованые).',
-                                         reply_markup=keyboard_markup)
+            with open('bot_app/media/active_voucher.jpg', 'rb') as image_file:
+                await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                             caption='✅ Все активные ваучеры (еще не использованые).',
+                                             reply_markup=keyboard_markup)
 
     @staticmethod
     async def view_selected_active_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -237,18 +240,19 @@ class AdminCommands:
         await delete_messages(update, context)
 
         if not selected_deactivate_voucher:
-            await context.bot.send_photo(chat_id=chat_id,
-                                         photo=img_path.get('empty_data'),
-                                         caption='Пока активированых ваучеров нет!',
-                                         reply_markup=keyboard)
+            with open('bot_app/media/empty_data.jpg', 'rb') as image_file:
+                await context.bot.send_photo(chat_id=chat_id,
+                                             photo=image_file,
+                                             caption='Пока активированых ваучеров нет!',
+                                             reply_markup=keyboard)
         else:
             for voucher_data in selected_deactivate_voucher:
                 voucher_message += f'❌\nID: {voucher_data[0]}\nValue: {voucher_data[1]}\nDate: {voucher_data[2]}\n'
-
-            await context.bot.send_photo(chat_id=chat_id,
-                                         photo=img_path.get('active_vouchers_img'),
-                                         caption=voucher_message,
-                                         reply_markup=keyboard)
+            with open('bot_app/media/active_voucher.jpg', 'rb') as image_file:
+                await context.bot.send_photo(chat_id=chat_id,
+                                             photo=image_file,
+                                             caption=voucher_message,
+                                             reply_markup=keyboard)
 
     @staticmethod
     async def activate_voucher(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -264,12 +268,3 @@ class AdminCommands:
         db_file = '/tattoo_bot_telegram.db'
 
         await context.bot.send_document(chat_id=chat_id, document=db_file)
-
-
-img_path = {
-    'admin_image': 'bot_app/media/admin_image.jpg',
-    'admin_error': 'bot_app/media/denied.jpg',
-    'active_vouchers_img': 'bot_app/media/active_voucher.jpg',
-    'empty_data': 'bot_app/media/empty_data.jpg',
-    'stat_image': 'bot_app/media/statistic_photo.jpg'
-}

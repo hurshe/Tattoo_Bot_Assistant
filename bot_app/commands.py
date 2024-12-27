@@ -84,9 +84,10 @@ class MainMenuCommands:
         keyboard = InlineKeyboardMarkup([[instagram_button, facebook_button], [back_button]])
 
         await context.bot.deleteMessage(chat_id=chat_id, message_id=message_id)
-        await context.bot.send_photo(chat_id=chat_id, photo=main_messages['instagram_image'],
-                                     caption=main_messages[lang]['kontakt'],
-                                     reply_markup=keyboard)
+        with open('bot_app/media/instagram.PNG', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                         caption=main_messages[lang]['kontakt'],
+                                         reply_markup=keyboard)
 
     @staticmethod
     async def faq_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -131,8 +132,9 @@ class MainMenuCommands:
 
         await context.bot.deleteMessage(chat_id=chat_id, message_id=message_id)
         await delete_messages(update, context)
-        await context.bot.send_photo(chat_id=chat_id, photo=main_messages.get('faq_image'),
-                                     reply_markup=selected_keyboard)
+        with open('bot_app/media/FAQ/main_faq.PNG', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                         reply_markup=selected_keyboard)
 
     @staticmethod
     async def location_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -186,9 +188,10 @@ class MainMenuCommands:
                 await delete_messages(update, context)
         except Exception as e:
             return e
-        await context.bot.send_photo(chat_id=chat_id,
-                                     photo=main_messages.get('main_menu_image'),
-                                     reply_markup=keyboard_markup)
+        with open('bot_app/media/main_menu_img.PNG', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id,
+                                         photo=image_file,
+                                         reply_markup=keyboard_markup)
 
         return delete_prev_func
 

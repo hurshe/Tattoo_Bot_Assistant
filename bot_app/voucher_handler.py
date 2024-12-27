@@ -123,8 +123,9 @@ class VoucherCommands:
             ])
 
         await delete_messages(update, context)
-        await context.bot.send_photo(chat_id=chat_id, photo=voucher_messages['voucher_img'],
-                                     caption=voucher_messages[lang]['voucher'], reply_markup=keyboard)
+        with open('bot_app/media/Voucher/main_voucher_img.PNG', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                         caption=voucher_messages[lang]['voucher'], reply_markup=keyboard)
 
     @staticmethod
     async def price_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -147,8 +148,9 @@ class VoucherCommands:
             ])
 
         await delete_messages(update, context)
-        await context.bot.send_photo(chat_id=chat_id, photo=voucher_messages['money_img'],
-                                     caption=voucher_messages[lang]['price_info'], reply_markup=keyboard)
+        with open('bot_app/media/money.jpg', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                         caption=voucher_messages[lang]['price_info'], reply_markup=keyboard)
 
     @staticmethod
     async def price_more_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -163,8 +165,9 @@ class VoucherCommands:
         keyboard = InlineKeyboardMarkup([[instagram_keyboard, linkedin_keyboard], [back_button]])
 
         await delete_messages(update, context)
-        await context.bot.send_photo(chat_id=chat_id, photo=voucher_messages['price_more_image'],
-                                     caption=voucher_messages[lang]['price_more_info'], reply_markup=keyboard)
+        with open('bot_app/media/more_image.JPG', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                         caption=voucher_messages[lang]['price_more_info'], reply_markup=keyboard)
 
     @staticmethod
     async def manage_payment_or_price(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -193,9 +196,10 @@ class VoucherCommands:
             keyboard = InlineKeyboardMarkup([[button_pay, button_change_price], [check_payment], [back_button]])
 
             await delete_messages(update, context)
-            await context.bot.send_photo(chat_id=chat_id, photo=voucher_messages['payment_img'],
-                                         caption=voucher_messages[lang]['payment'] % (selected_value, dark_soul_code),
-                                         reply_markup=keyboard)
+            with open('bot_app/media/payment_img.PNG', 'rb') as image_file:
+                await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                             caption=voucher_messages[lang]['payment'] % (selected_value, dark_soul_code),
+                                             reply_markup=keyboard)
         else:
             pass
 
@@ -212,8 +216,9 @@ class VoucherCommands:
         keyboard = InlineKeyboardMarkup([[inst_button, facebook_button], [back_button]])
 
         await delete_messages(update, context)
-        await context.bot.send_photo(chat_id=chat_id, photo=voucher_messages['paper_voucher_img'],
-                                     caption=voucher_messages[lang]['paper_voucher'], reply_markup=keyboard)
+        with open('bot_app/media/Voucher/paper_voucher_image.PNG', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id, photo=image_file,
+                                         caption=voucher_messages[lang]['paper_voucher'], reply_markup=keyboard)
 
     @staticmethod
     async def check_payment_intent(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -271,10 +276,11 @@ class VoucherCommands:
         keyboard = InlineKeyboardMarkup([[active_vouchers_button], [back_button]])
 
         await delete_messages(update, context)
-        await context.bot.send_photo(chat_id=chat_id,
-                                     photo=voucher_messages['user_vouchers_img'],
-                                     caption=voucher_messages[lang]['user_vouchers'],
-                                     reply_markup=keyboard)
+        with open('bot_app/media/Voucher/my_vouchers_img.PNG', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id,
+                                         photo=image_file,
+                                         caption=voucher_messages[lang]['user_vouchers'],
+                                         reply_markup=keyboard)
 
     @staticmethod
     async def user_active_vouchers(update: Update, context: ContextTypes.DEFAULT_TYPE):

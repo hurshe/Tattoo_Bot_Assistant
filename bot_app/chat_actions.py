@@ -80,18 +80,6 @@ main_messages = {
     },
 
     'admin_info': 'Нажми на "CHECK VOUCHER" что бы проверить ваучер клиента!',
-
-    'start_image': 'bot_app/media/start_img.png',
-    'stat_image': 'bot_app/media/statistic_photo.jpg',
-    'main_menu_image': 'bot_app/media/main_menu_img.png',
-    'admin_image': 'bot_app/media/admin_image.jpg',
-    'faq_image': 'bot_app/media/FAQ/main_faq.png',
-    'instagram_image': 'bot_app/media/instagram.png',
-    'error_lang_image': 'bot_app/media/error_lang.png',
-    'admin_error': 'bot_app/media/denied.jpg',
-    'active_vouchers_img': 'bot_app/media/active_voucher.jpg',
-    'empty_data': 'bot_app/media/empty_data.jpg'
-
 }
 
 voucher_messages = {
@@ -339,11 +327,4 @@ voucher_messages = {
         'main_menu_btn': '⏪ MENU GŁOWNE',
         'my_vouchers_btn': '⏩ MOJE WOUCZERY'
     },
-    'user_vouchers_img': 'bot_app/media/Voucher/my_vouchers_img.png',
-    'kontakt_image': 'bot_app/media/instagram.png',
-    'price_more_image': 'bot_app/media/more_image.jpg',
-    'payment_img': 'bot_app/media/payment_img.png',
-    'money_img': 'bot_app/media/money.jpg',
-    'voucher_img': 'bot_app/media/Voucher/main_voucher_img.png',
-    'paper_voucher_img': "bot_app/media/Voucher/paper_voucher_image.png",
 }
