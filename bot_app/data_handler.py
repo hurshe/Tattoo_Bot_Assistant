@@ -13,7 +13,6 @@ from bot_app.commands import MainMenuCommands
 
 from bot_app.email_sender import send_email_with_attachment
 from bot_app.conversation_handler import cancel
-from bot_app.chat_actions import delete_messages
 
 
 dotenv.load_dotenv()
