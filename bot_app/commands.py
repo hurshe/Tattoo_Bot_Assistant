@@ -68,9 +68,8 @@ class MainMenuCommands:
                 await delete_messages(update, context)
         except Exception as e:
             return e
-        await context.bot.send_photo(chat_id=chat_id,
-                                     photo=main_messages.get('start_image'),
-                                     reply_markup=keyboard)
+        with open('bot_app/media/start_img.PNG', 'rb') as image_file:
+            await context.bot.send_photo(chat_id=chat_id, photo=image_file, reply_markup=keyboard)
 
     @staticmethod
     async def kontakt_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
