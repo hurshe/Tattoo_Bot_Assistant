@@ -13,6 +13,7 @@ from bot_app.commands import MainMenuCommands
 
 from bot_app.email_sender import send_email_with_attachment
 from bot_app.conversation_handler import cancel
+from bot_app.chat_actions import delete_messages
 
 
 dotenv.load_dotenv()
@@ -195,6 +196,12 @@ async def data_controller(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
         await context.bot.send_message(chat_id=chat_id, text=data_to_chat[lang]['same_lang'], reply_markup=keyboard)
 
+
+#                   FAQ IMAGE PATH
+how_care_image_path = 'bot_app/media/FAQ/FAQ-picture.jpg'
+how_much_image_path = 'bot_app/media/FAQ/FAQ-picture.jpg'
+how_prepare_image_path = 'bot_app/media/FAQ/FAQ-picture.jpg'
+
 data_to_chat = {
     'RU': {
         'start': '''Привет! 👋
@@ -202,7 +209,16 @@ data_to_chat = {
             Я виртуальный помощник тату-мастера AleksandrDarkSoul.
             Перейди в меню и ознакомься с информацией, которую мы для тебя приготовили.🔥
             Желаю татушного дня!😉''',
-        'same_lang': "✅Этот язык был уже выбран!",
+
+        'care': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
+        'how_to': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
+        'how_much': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
+        'consult': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
+        'same_lang': "🫡Этот язык был уже выбран!",
+        'care_button': 'Уход за тату',
+        'how_to_button': 'Подготовка к снансу',
+        'how_much_button': 'Формирование цены',
+        'consult_button': 'Консультация',
         'main_menu_btn': 'ГЛАВНОЕ МЕНЮ',
     },
     'ENG': {
@@ -211,7 +227,15 @@ data_to_chat = {
             A virtual assistant of tattoo artist AleksandrDarkSoul.
             Go to the menu and check out the information we have prepared for you.🔥
             Have a tattoo-filled day!😉''',
-        'same_lang': "✅This language already selected!",
+
+        'care': 'https://telegra.ph/Tattoo-care-03-12',
+        'how_to': 'https://telegra.ph/Tattoo-care-03-12',
+        'how_much': 'https://telegra.ph/Tattoo-Pricing-10-29',
+        'consult': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
+        'same_lang': "🫡This language already selected!",
+        'care_button': 'Tattoo care',
+        'how_to_button': 'Preparing for the session',
+        'how_much_button': 'Price formation',
         'main_menu_btn': 'MAIN MENU',
     },
     'PL': {
@@ -220,10 +244,25 @@ data_to_chat = {
             Jestem wirtualnym asystentem tatuażysty AleksandrDarkSoul.
             Przejdź do menu i zapoznaj się z informacją, którą dla Ciebie przygotowaliśmy.🔥
             Życzę Ci tatuowanego dnia!😉 ''',
-        'same_lang': "✅Ten język jest już wybrany!",
+
+        'care': 'https://telegra.ph/Pielęgnacja-tatuaużu-03-12',
+        'how_to': 'https://telegra.ph/Pielęgnacja-tatuaużu-03-12',
+        'how_much': 'https://telegra.ph/Pielęgnacja-tatuaużu-03-12',
+        'consult': 'https://telegra.ph/Uhod-za-tatuirovkoj-03-12',
+        'same_lang': "🫡Ten język jest już wybrany!",
+        'care_button': 'Pielęgnacja tatuażu',
+        'how_to_button': 'Przygotowanie do sesji',
+        'how_much_button': 'Kształtowanie ceny',
         'main_menu_btn': 'GŁÓWNE MENU',
     },
+
+    'care': how_care_image_path,
+    'how_to': how_prepare_image_path,
+    'how_much': how_much_image_path,
+    'consult': how_much_image_path,
+
     'start': main_commands.start_command,
+    'faq': main_commands.faq_command,
     'kontakt': main_commands.kontakt_command,
     'local': main_commands.location_command,
     'all_commands': main_commands.all_commands,
@@ -259,7 +298,13 @@ actions = {
                          'ENG': 'ENG',
                          'PL': 'PL'},
 
-    'price_actions': {'300': '300',
+    'faq_actions': {'care': 'care',
+                    'how_to': 'how_to',
+                    'how_much': 'how_much',
+                    'consult': 'consult'},
+
+    'price_actions': {'5': '5',
+                      '300': '300',
                       '600': '600',
                       '800': '800',
                       '1000': '1000'},
