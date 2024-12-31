@@ -58,9 +58,9 @@ class MainMenuCommands:
         chat_id = update.effective_chat.id
         message_text = update.effective_message.text
 
-        russian_button = InlineKeyboardButton('🇺🇦 RU', callback_data='RU')
-        english_button = InlineKeyboardButton('🇺🇲 ENG', callback_data="ENG")
-        polish_button = InlineKeyboardButton('🇵🇱 PL', callback_data='PL')
+        russian_button = InlineKeyboardButton('🔘 RU ', callback_data='RU')
+        english_button = InlineKeyboardButton('🔘 ENG ', callback_data="ENG")
+        polish_button = InlineKeyboardButton('🔘 PL ', callback_data='PL')
 
         keyboard = InlineKeyboardMarkup([[russian_button, english_button, polish_button]])
         try:
@@ -77,11 +77,11 @@ class MainMenuCommands:
         message_id = update.effective_message.message_id
         lang = db.get_selected_lang(chat_id)
 
-        instagram_button = InlineKeyboardButton("INSTAGRAM", url='https://www.instagram.com/alexsun_darksoul/')
-        facebook_button = InlineKeyboardButton('FACEBOOK', url='https://www.facebook.com/profile.php?id=100089965814206')
+        instagram_button = InlineKeyboardButton("Instagram", url='https://www.instagram.com/alexsun_darksoul/')
+        facebook_button = InlineKeyboardButton('Facebook', url='https://www.facebook.com/profile.php?id=100089965814206')
         back_button = InlineKeyboardButton(main_messages[lang]['back_btn'], callback_data='all_commands')
 
-        keyboard = InlineKeyboardMarkup([[instagram_button, facebook_button], [back_button]])
+        keyboard = InlineKeyboardMarkup([[facebook_button, instagram_button], [back_button]])
 
         await context.bot.deleteMessage(chat_id=chat_id, message_id=message_id)
         with open('bot_app/media/instagram.PNG', 'rb') as image_file:
@@ -161,11 +161,24 @@ class MainMenuCommands:
         delete_prev_func = db.delete_prev_func_from_db(chat_id)
 
         buttons_info = {
-            'START': 'start',
-            'F.A.Q': 'faq',
-            'KONTAKT': 'kontakt',
-            'LOCALIZATION': 'local',
-            'VOUCHER': 'voucher'
+            'ENG':
+                {'🔄 LANGUAGE': 'start',
+                 '🗃️ F.A.Q': 'faq',
+                 '📱 KONTAKT': 'kontakt',
+                 '📍 LOCALIZATION': 'local',
+                 '🎁 VOUCHER': 'voucher'},
+            'PL':
+                {'JĘZYK 🔄': 'start',
+                 'F.A.Q 🗃️': 'faq',
+                 'KONTAKT 📱': 'kontakt',
+                 'LOKALIZACJA 📍': 'local',
+                 'VOUCHER 🎁': 'voucher'},
+            'RU':
+                {'ЯЗЫК 🔄': 'start',
+                 'F.A.Q 🗃️': 'faq',
+                 'КОНТАКТ 📱': 'kontakt',
+                 'ГЕОЛОКАЦИЯ 📍': 'local',
+                 'ВАУЧЕРЫ 🎁': 'voucher'},
         }
 
         buttons_per_row = 2
@@ -173,9 +186,9 @@ class MainMenuCommands:
         keyboard_buttons = [
             [
                 InlineKeyboardButton(button_text, callback_data=callback_data)
-                for button_text, callback_data in buttons_info.items()
-            ][i:i + buttons_per_row]
-            for i in range(0, len(buttons_info), buttons_per_row)
+                for button_text, callback_data in list(buttons_info[lang].items())[i:i + buttons_per_row]
+            ]
+            for i in range(0, len(buttons_info[lang]), buttons_per_row)
         ]
 
         keyboard_markup = InlineKeyboardMarkup(keyboard_buttons)
