@@ -111,8 +111,8 @@ class VoucherCommands:
         lang = db.get_selected_lang(chat_id)
 
         e_voucher_button = InlineKeyboardButton('E-VOUCHER', callback_data='e_voucher')
-        paper_voucher_button = InlineKeyboardButton('Paper Voucher', callback_data='paper_voucher')
-        user_vouchers_button = InlineKeyboardButton('My vouchers', callback_data='user_vouchers')
+        paper_voucher_button = InlineKeyboardButton('P-VOUCHER', callback_data='paper_voucher')
+        user_vouchers_button = InlineKeyboardButton('MY VOUCHERS', callback_data='user_vouchers')
         back_button = InlineKeyboardButton(voucher_messages[lang]['back_btn'], callback_data='all_commands')
 
         keyboard = InlineKeyboardMarkup(
@@ -136,7 +136,7 @@ class VoucherCommands:
         button_600 = InlineKeyboardButton('600 PLN', callback_data='600')
         button_800 = InlineKeyboardButton('800 PLN', callback_data='800')
         button_1000 = InlineKeyboardButton('1000 PLN', callback_data='1000')
-        more_button = InlineKeyboardButton('MORE', callback_data='price_more')
+        more_button = InlineKeyboardButton('🤑1000+🤑', callback_data='price_more')
         back_button = InlineKeyboardButton(voucher_messages[lang]['back_btn'], callback_data='voucher')
 
         keyboard = InlineKeyboardMarkup(
@@ -178,19 +178,34 @@ class VoucherCommands:
         randomizer = string.ascii_uppercase + string.digits
         dark_soul_code = ''.join(secrets.choice(randomizer) for i in range(5))
         db.add_dark_soul_code(dark_soul_code, chat_id)
+
         payment_actions = {
             '300': 'https://t.me/tattoo_assistant_bot/payment_300_pln',
             '600': 'https://t.me/tattoo_assistant_bot/payment_600_pln',
             '800': 'https://t.me/tattoo_assistant_bot/payment_800_pln',
             '1000': 'https://t.me/tattoo_assistant_bot/payment_1000_pln',
-            '5': 'https://t.me/tattoo_assistant_bot/payment_5_pln'
+            'RU': {
+                'pay': 'Заплатить',
+                'change': 'Изменить цену',
+                'check': 'Проверить платеж'
+            },
+            'PL': {
+                'pay': 'Zapłać',
+                'change': 'Zmień cenę',
+                'check': 'Sprawdź płatność'
+            },
+            'ENG': {
+                'pay': 'PAY',
+                'change': 'Change price',
+                'check': 'Check Payment'
+            }
         }
 
         if selected_value in payment_actions:
             url = payment_actions[selected_value]
-            button_pay = InlineKeyboardButton('PAY', url=url)
-            button_change_price = InlineKeyboardButton("CHANGE PRICE", callback_data='change_price')
-            check_payment = InlineKeyboardButton('Check Payment', callback_data='check')
+            button_pay = InlineKeyboardButton(payment_actions[lang]['pay'], url=url)
+            button_change_price = InlineKeyboardButton(payment_actions[lang]['change'], callback_data='change_price')
+            check_payment = InlineKeyboardButton(payment_actions[lang]['check'], callback_data='check')
             back_button = InlineKeyboardButton(voucher_messages[lang]['back_btn'], callback_data='change_price')
 
             keyboard = InlineKeyboardMarkup([[button_pay, button_change_price], [check_payment], [back_button]])
@@ -198,7 +213,8 @@ class VoucherCommands:
             await delete_messages(update, context)
             with open('bot_app/media/payment_img.PNG', 'rb') as image_file:
                 await context.bot.send_photo(chat_id=chat_id, photo=image_file,
-                                             caption=voucher_messages[lang]['payment'] % (selected_value, dark_soul_code),
+                                             caption=voucher_messages[lang]['payment'] % (
+                                             selected_value, dark_soul_code),
                                              reply_markup=keyboard)
         else:
             pass
